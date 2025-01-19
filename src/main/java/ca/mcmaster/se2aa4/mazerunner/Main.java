@@ -1,20 +1,27 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+import org.apache.logging.log4j.core.config.Configurator;
 public class Main {
 
     private static final Logger logger = LogManager.getLogger();
 
     public static void main(String[] args) {
-        System.out.println("** Starting Maze Runner");
+        Configurator.setLevel("ca.mcmaster.se2aa4.mazerunner.Main", org.apache.logging.log4j.Level.INFO);
+        logger.info("** Starting Maze Runner\n");
+        String file = "";
+        for(int i = 0; i < args.length - 1; i++){
+            if(args[i].equals("-i")){
+                file = args[i+1];
+            }
+        }
         try {
-            System.out.println("**** Reading the maze from file " + args[0]);
-            BufferedReader reader = new BufferedReader(new FileReader(args[0]));
+            System.out.println("**** Reading the maze from file " + file);
+            BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = reader.readLine()) != null) {
                 for (int idx = 0; idx < line.length(); idx++) {
@@ -27,10 +34,10 @@ public class Main {
                 System.out.print(System.lineSeparator());
             }
         } catch(Exception e) {
-            System.err.println("/!\\ An error has occured /!\\");
+            logger.error("/!\\ An error has occured /!\\");
         }
-        System.out.println("**** Computing path");
-        System.out.println("PATH NOT COMPUTED");
-        System.out.println("** End of MazeRunner");
+        logger.info("**** Computing path");
+        logger.info("PATH NOT COMPUTED");
+        logger.info("** End of MazeRunner");
     }
 }
