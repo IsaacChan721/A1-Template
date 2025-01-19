@@ -2,7 +2,11 @@ package ca.mcmaster.se2aa4.mazerunner;
 
 public class Navigator {
     private final char[] directions = {'N', 'E', 'S', 'W'};
-    private char facing = 'E';
+    private char facing;
+
+    public Navigator(){
+        facing = 'E';
+    }
 
     public void turnLeft(){
         for(int i=0; i<directions.length; i++){
