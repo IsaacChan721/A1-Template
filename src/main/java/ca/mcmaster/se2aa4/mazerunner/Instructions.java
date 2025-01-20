@@ -18,7 +18,7 @@ public class Instructions {
         }
     }
 
-    public void readInstructions(){
+    public String readInstructions(){
         int multiplier = 1;
         String newInstructions = "";
         
@@ -45,7 +45,28 @@ public class Instructions {
         }
 
         instructions = newInstructions;
+        return instructions;
     }
 
-
+    public String instructionToFactorial(){
+        String factorial = "";
+        int counter = 1;
+        char currChar = instructions.charAt(0);
+        for(int i = 1; i < instructions.length(); i++){
+            char newChar = instructions.charAt(i);
+            if(currChar == newChar){
+                counter++;
+                if(i == instructions.length() - 1) factorial += counter + "" + currChar;
+            } else if (counter == 1){
+                factorial += currChar + " ";
+                currChar = newChar;
+                if(i == instructions.length() - 1) factorial += newChar;
+            } else {    
+                factorial += counter + "" + currChar + " ";
+                currChar = newChar;
+                counter = 1;
+            }
+        }
+        return factorial;
+    }
 }

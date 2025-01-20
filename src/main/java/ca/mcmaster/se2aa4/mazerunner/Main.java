@@ -17,11 +17,15 @@ public class Main {
         Maze maze = new Maze(flagReader.getFile(), navigator);
         Instructions instructions = new Instructions(flagReader.getPath(), maze);
 
-        if(flagReader.getPath() != null){
-            instructions.excecuteInstruction();
-            if(maze.getLocation()[0] == maze.getExit()[0] && maze.getLocation()[1] == maze.getExit()[1]) System.out.println("SUCCESS");
-            else System.out.println("FAIL");
-        }
+        System.out.println(instructions.instructionToFactorial());
+
+        // if(flagReader.getPath() != null){
+        //     instructions.excecuteInstruction();
+        //     if(maze.getLocation()[0] == maze.getExit()[0] && maze.getLocation()[1] == maze.getExit()[1]) System.out.println("SUCCESS");
+        //     else System.out.println("FAIL");
+        // } else {
+        //     //goober dash
+        // }
 
         logger.info("**** Computing path");
         logger.info("PATH NOT COMPUTED");
