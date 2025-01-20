@@ -76,12 +76,6 @@ public class Maze {
 
     public void moveNavigatorForward(){
         char facing = navigator.getFacing();
-        // System.out.println("Currently facing: " + facing);
-        // System.out.println("Current Location: " + location[0] + "," + location[1] + "!");
-        // System.out.println("North: " + mazeObject.get(location[0])[location[1]-1] + "!");
-        // System.out.println("East: " + mazeObject.get(location[0]+1)[location[1]] + "!");
-        // System.out.println("South: " + mazeObject.get(location[0])[location[1]+1] + "!");
-        // System.out.println("West: " + mazeObject.get(location[0]-1)[location[1]] + "!");
 
         if(facing == 'N' && location[1] != 0 && mazeObject.get(location[1]-1)[location[0]] == ' ') location[1] -= 1;
         else if(facing == 'E' && location[0] != mazeWidth-1 && mazeObject.get(location[1])[location[0]+1] == ' ') location[0] += 1;

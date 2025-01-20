@@ -11,41 +11,25 @@ public class Main {
         Configurator.setLevel("ca.mcmaster.se2aa4.mazerunner.Main", org.apache.logging.log4j.Level.INFO);
         logger.info("** Starting Maze Runner\n");
 
-        // Checking for files using the -i flag
-        String file = "";
-        for(int i = 0; i < args.length - 1; i++){
-            if(args[i].equals("-i")){
-                file = args[i+1];
-            }
-        }
-
         // Setup
+        FlagReader flagReader = new FlagReader(args);
         Navigator navigator = new Navigator('E');
-        Maze maze = new Maze(file, navigator);
-        Instructions instructions = new Instructions("FLFRFFLFFFFFFRFFFFRFFLFFRFFLF", maze);
+        Maze maze = new Maze(flagReader.getFile(), navigator);
+        Instructions instructions = new Instructions(flagReader.getPath(), maze);
 
-        instructions.excecuteInstruction();
-
-        // try {
-        //     System.out.println("**** Reading the maze from file " + file);
-        //     BufferedReader reader = new BufferedReader(new FileReader(file));
-        //     String line;
-        //     while ((line = reader.readLine()) != null) {
-        //         for (int idx = 0; idx < line.length(); idx++) {
-        //             if (line.charAt(idx) == '#') {
-        //                 System.out.print("WALL ");
-        //             } else if (line.charAt(idx) == ' ') {
-        //                 System.out.print("PASS ");
-        //             }
-        //         }
-        //         System.out.print(System.lineSeparator());
-        //     }
-        // } catch(Exception e) {
-        //     logger.error("/!\\ An error has occured /!\\");
-        // }
+        if(flagReader.getPath() != null){
+            instructions.excecuteInstruction();
+            if(maze.getLocation()[0] == maze.getExit()[0] && maze.getLocation()[1] == maze.getExit()[1]) System.out.println("SUCCESS");
+            else System.out.println("FAIL");
+        }
 
         logger.info("**** Computing path");
         logger.info("PATH NOT COMPUTED");
         logger.info("** End of MazeRunner");
     }
 }
+
+
+// to do:
+// test the canonical and factored form, for both input and output
+// test other files
