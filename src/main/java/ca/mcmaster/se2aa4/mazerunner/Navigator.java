@@ -4,8 +4,8 @@ public class Navigator {
     private final char[] directions = {'N', 'E', 'S', 'W'};
     private char facing;
 
-    public Navigator(){
-        facing = 'E';
+    public Navigator(char facing){
+        this.facing = facing;
     }
 
     public void turnLeft(){
@@ -26,10 +26,7 @@ public class Navigator {
         }
     }
 
-    public boolean checkForward(char[] paths){
-        if(facing == 'N') return paths[0] == ' ';
-        else if (facing == 'E') return paths[1] == ' ';
-        else if (facing == 'S') return paths[2] == ' ';
-        else return paths[3] == ' ';
+    public char getFacing(){
+        return facing;
     }
 }

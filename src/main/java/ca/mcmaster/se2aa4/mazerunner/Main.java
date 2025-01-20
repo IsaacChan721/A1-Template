@@ -10,15 +10,22 @@ public class Main {
     public static void main(String[] args) {
         Configurator.setLevel("ca.mcmaster.se2aa4.mazerunner.Main", org.apache.logging.log4j.Level.INFO);
         logger.info("** Starting Maze Runner\n");
+
+        // Checking for files using the -i flag
         String file = "";
         for(int i = 0; i < args.length - 1; i++){
             if(args[i].equals("-i")){
                 file = args[i+1];
             }
         }
-        System.out.println(file);
-        Maze maze = new Maze(file);
-        maze.printMaze();
+
+        // Setup
+        Navigator navigator = new Navigator('E');
+        Maze maze = new Maze(file, navigator);
+        Instructions instructions = new Instructions("FLFRFFLFFFFFFRFFFFRFFLFFRFFLF", maze);
+
+        instructions.excecuteInstruction();
+
         // try {
         //     System.out.println("**** Reading the maze from file " + file);
         //     BufferedReader reader = new BufferedReader(new FileReader(file));
