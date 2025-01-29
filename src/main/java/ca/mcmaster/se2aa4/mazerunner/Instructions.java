@@ -10,6 +10,7 @@ public class Instructions {
     }
 
     public void excecuteInstruction(){
+        maze.printMaze();
         for(int i = 0; i < instructions.length(); i++){
             if(instructions.charAt(i) == 'F') maze.moveNavigatorForward();
             else if(instructions.charAt(i) == 'R') maze.getNavigator().turnRight();
@@ -18,12 +19,12 @@ public class Instructions {
         }
     }
 
-    public String readInstructions(){
+    public void readInstructions(String path){
         int multiplier = 1;
         String newInstructions = "";
         
-        for(int i = 0; i < instructions.length(); i++){
-            char instruction = instructions.charAt(i);
+        for(int i = 0; i < path.length(); i++){
+            char instruction = path.charAt(i);
             if(Character.isDigit(instruction)){
                 multiplier = Character.getNumericValue(instruction);
             } else if (instruction == 'F') {
@@ -45,10 +46,9 @@ public class Instructions {
         }
 
         instructions = newInstructions;
-        return instructions;
     }
 
-    public String instructionToFactorial(){
+    public String getFactorial(){
         String factorial = "";
         int counter = 1;
         char currChar = instructions.charAt(0);
@@ -68,5 +68,13 @@ public class Instructions {
             }
         }
         return factorial;
+    }
+
+    public String getCanonical(){
+        return instructions;
+    }
+
+    public void setInstructions(String instructions){
+        this.instructions = instructions;
     }
 }

@@ -74,14 +74,15 @@ public class Maze {
         location = coordinate;
     }
 
-    public void moveNavigatorForward(){
+    public boolean moveNavigatorForward(){
         char facing = navigator.getFacing();
 
         if(facing == 'N' && location[1] != 0 && mazeObject.get(location[1]-1)[location[0]] == ' ') location[1] -= 1;
         else if(facing == 'E' && location[0] != mazeWidth-1 && mazeObject.get(location[1])[location[0]+1] == ' ') location[0] += 1;
         else if(facing == 'S' && location[1] != mazeHeight-1 && mazeObject.get(location[1]+1)[location[0]] == ' ') location[1] += 1;
         else if(facing == 'W' && location[0] != 0 && mazeObject.get(location[1])[location[0]-1] == ' ') location[0] -= 1;
-        else System.out.println("Nowhere to move to");
+        else return false;
+        return true;
     }
 
     public void printMaze(){

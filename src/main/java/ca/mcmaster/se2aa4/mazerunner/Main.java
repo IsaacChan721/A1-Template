@@ -13,27 +13,41 @@ public class Main {
 
         // Setup
         FlagReader flagReader = new FlagReader(args);
+        String path = flagReader.getPath();
+        String file = flagReader.getFile();
+
         Navigator navigator = new Navigator('E');
-        Maze maze = new Maze(flagReader.getFile(), navigator);
-        Instructions instructions = new Instructions(flagReader.getPath(), maze);
-
-        System.out.println(instructions.instructionToFactorial());
-
-        // if(flagReader.getPath() != null){
-        //     instructions.excecuteInstruction();
-        //     if(maze.getLocation()[0] == maze.getExit()[0] && maze.getLocation()[1] == maze.getExit()[1]) System.out.println("SUCCESS");
-        //     else System.out.println("FAIL");
-        // } else {
-        //     //goober dash
-        // }
+        Maze maze = new Maze(file, navigator);
+        Instructions instructions = new Instructions(path, maze);
+        Algorithm algo = new Algorithm(maze);
 
         logger.info("**** Computing path");
-        logger.info("PATH NOT COMPUTED");
+
+        if(path == null){ // search for a path that can get home if no path is found
+            path = algo.rightHandPath();
+            instructions.setInstructions(path);
+            logger.info("Canonical path: " + path);
+            logger.info("Factorial Path: " + instructions.getFactorial());
+        } else { // check if the path is valid
+            instructions.readInstructions(path);
+            instructions.excecuteInstruction();
+
+            //checks if the path works
+            if(maze.getLocation()[0] == maze.getExit()[0] && maze.getLocation()[1] == maze.getExit()[1]){
+                logger.info("Factorial Path: " + instructions.getFactorial());
+                logger.info("SUCCESS");
+            } else {
+                logger.info("FAIL");
+            }
+        }
+
         logger.info("** End of MazeRunner");
     }
 }
 
 
 // to do:
-// test the canonical and factored form, for both input and output
+// enum north south east and west (indexing as well)
+// enum for 2d char array
 // test other files
+// add algorithm
