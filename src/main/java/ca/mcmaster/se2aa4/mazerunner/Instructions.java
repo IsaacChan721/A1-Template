@@ -10,14 +10,13 @@ public class Instructions {
     }
 
     public void excecuteInstruction(){
-        maze.printMaze();
+        //maze.printMaze();
         for(int i = 0; i < instructions.length(); i++){
             if(instructions.charAt(i) == 'F') maze.moveNavigatorForward();
             else if(instructions.charAt(i) == 'R') maze.getNavigator().turnRight();
             else if(instructions.charAt(i) == 'L') maze.getNavigator().turnLeft();
             //maze.printMaze();
         }
-        maze.printMaze();
     }
 
     public void readInstructions(String path){

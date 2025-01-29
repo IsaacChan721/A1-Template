@@ -16,7 +16,7 @@ public class Main {
         String path = flagReader.getPath();
         String file = flagReader.getFile();
 
-        Navigator navigator = new Navigator('E');
+        Navigator navigator = new Navigator(Directions.EAST);
         Maze maze = new Maze(file, navigator);
         Instructions instructions = new Instructions(path, maze);
         Algorithm algo = new Algorithm(maze);
@@ -49,5 +49,3 @@ public class Main {
 // to do:
 // enum north south east and west (indexing as well)
 // enum for 2d char array
-// test other files
-// add algorithm
