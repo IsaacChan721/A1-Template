@@ -15,37 +15,41 @@ public class Instructions {
             if(instructions.charAt(i) == 'F') maze.moveNavigatorForward();
             else if(instructions.charAt(i) == 'R') maze.getNavigator().turnRight();
             else if(instructions.charAt(i) == 'L') maze.getNavigator().turnLeft();
-            maze.printMaze();
+            //maze.printMaze();
         }
+        maze.printMaze();
     }
 
     public void readInstructions(String path){
         int multiplier = 1;
         String newInstructions = "";
+        boolean prevNumber = false;
         
+        // iterates through the path
         for(int i = 0; i < path.length(); i++){
             char instruction = path.charAt(i);
+            // checks if the read instruction is a digit
             if(Character.isDigit(instruction)){
-                multiplier = Character.getNumericValue(instruction);
-            } else if (instruction == 'F') {
-                for(int j = 0; j < multiplier; j++){
-                    newInstructions += instruction;
+                if(prevNumber){ // if the previous instruction character was already a number, add onto the multiplier
+                    multiplier = multiplier * 10 + Character.getNumericValue(instruction);
+                } else { // change the multiplier to the digit value
+                    multiplier = Character.getNumericValue(instruction);
+                    prevNumber = true;
+                }
+            // If it matches any of the character inputs then do the corresponding navigator movements
+            } else {
+                if (instruction == 'F' || instruction == 'R' || instruction == 'L') { // moving forward, turning right, or turning left
+                    for(int j = 0; j < multiplier; j++){
+                        newInstructions += instruction;
+                    }
                 }
                 multiplier = 1;
-            } else if (instruction == 'R') {
-                for(int j = 0; j < multiplier; j++){
-                    newInstructions += instruction;
-                }
-                multiplier = 1;
-            } else if (instruction == 'L') {
-                for(int j = 0; j < multiplier; j++){
-                    newInstructions += instruction;
-                }
-                multiplier = 1;
+                prevNumber = false;
             }
         }
 
-        instructions = newInstructions;
+        //reassigns instructions into canonical form
+        this.instructions = newInstructions;
     }
 
     public String getFactorial(){
@@ -72,9 +76,5 @@ public class Instructions {
 
     public String getCanonical(){
         return instructions;
-    }
-
-    public void setInstructions(String instructions){
-        this.instructions = instructions;
     }
 }

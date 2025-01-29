@@ -25,7 +25,7 @@ public class Main {
 
         if(path == null){ // search for a path that can get home if no path is found
             path = algo.rightHandPath();
-            instructions.setInstructions(path);
+            instructions.readInstructions(path);
             logger.info("Canonical path: " + path);
             logger.info("Factorial Path: " + instructions.getFactorial());
         } else { // check if the path is valid
