@@ -3,11 +3,16 @@ package ca.mcmaster.se2aa4.mazerunner;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/* 
+This class is used to create the maze, allow the navigator to move in it
+and has many methods that allow access to different features of the maze
+*/ 
 public class Maze {
     private static final Logger logger = LogManager.getLogger();
     private BufferedReader reader;
@@ -18,6 +23,10 @@ public class Maze {
 
     private int mazeWidth, mazeHeight;
 
+    /*
+     * Maze constructor that takes in a file and uses it as the maze by reading the lines of the file,
+     * '#' represents the walls in the file and ' ' represents the spaces the navigator can move around.
+     */
     public Maze(String file, Navigator navigator){
         mazeObject = new ArrayList();
         this.navigator = navigator;
@@ -25,8 +34,10 @@ public class Maze {
         //Creating a file reader
         try {
             reader = new BufferedReader(new FileReader(file));
-        } catch (FileNotFoundException e) {
-            logger.error(e);
+        } catch (FileNotFoundException | NullPointerException e) {
+            logger.error("File Error: " + e.getMessage(), e);
+            System.out.println("Exiting program!");
+            System.exit(1);
         }
 
         try {
@@ -45,14 +56,25 @@ public class Maze {
             }
             mazeWidth = mazeObject.get(0).length;
             mazeHeight = mazeObject.size();
-        } catch (Exception e) {
-            logger.error("/!\\ An error has occured /!\\");
+        } catch (IOException e) {
+            logger.error("Error reading the file: " + e.getMessage(), e);
+            System.out.println("Exiting program!");
+            System.exit(1);
+        } catch (NullPointerException e) {
+            logger.error("Unexpected null reference encountered: " + e.getMessage(), e);
+            System.out.println("Exiting program!");
+            System.exit(1);
+        } catch (IllegalStateException e) {
+            logger.error("Invalid state: " + e.getMessage(), e);
+            System.out.println("Exiting program!");
+            System.exit(1);
         }
 
         //Searches for the entrance and sets the location there
         location = getEntrance();
     }
 
+    // returns the coordinates of the entrance of the maze
     public int[] getEntrance(){
         for(int i = 0; i < mazeHeight; i++){
             if(mazeObject.get(i)[0] == MazeFeatures.SPACE) return new int[]{0, i};
@@ -60,6 +82,7 @@ public class Maze {
         return null;
     }
 
+    // returns the coordinates of the exit of the maze
     public int[] getExit(){
         for(int i = 0; i < mazeHeight; i++){
             if(mazeObject.get(i)[mazeWidth-1] == MazeFeatures.SPACE) return new int[]{mazeWidth-1, i};
@@ -67,14 +90,19 @@ public class Maze {
         return null;
     }
 
+    // returns the location of the navigator
     public int[] getLocation(){
         return location;
     }
 
+    // sets the location of the navigator to a specified location
     public void setLocation(int[] coordinate){
         location = coordinate;
     }
 
+    /* This method makes many checks depending on which direction the navigator is facing and if there is space in front
+     * and returns a boolean determinines if moving was successful
+     */
     public boolean moveNavigatorForward(){
         Directions facing = navigator.getFacing();
 
@@ -87,6 +115,7 @@ public class Maze {
     }
 
     // for troubleshooting purposes only
+    // prints out the maze to visualize the movement of the navigator
     public void printMaze(){
         Directions facing = navigator.getFacing();
         String line = "";
@@ -109,6 +138,7 @@ public class Maze {
         System.out.println();
     }
 
+    // returns the navigator in the maze
     public Navigator getNavigator(){
         return navigator;
     }

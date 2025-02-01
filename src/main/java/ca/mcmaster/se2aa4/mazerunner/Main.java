@@ -3,49 +3,50 @@ package ca.mcmaster.se2aa4.mazerunner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
+
 public class Main {
 
+    // Logger instance for logging messages
     private static final Logger logger = LogManager.getLogger();
 
+    /*
+     * This is the main functionality of the program that takes in a maze file from the user and optionally a path.
+     * If the path is provided, the program will return whether the path is deemed successful or failed based on whether
+     * the navgator has reached the exit. If the program does not recieve a path, it will instead return a path that is
+     * deemed valid to complete the maze.
+     */
+    
     public static void main(String[] args) {
+        // Set the logging level for this class to INFO
         Configurator.setLevel("ca.mcmaster.se2aa4.mazerunner.Main", org.apache.logging.log4j.Level.INFO);
-        logger.info("** Starting Maze Runner\n");
 
-        // Setup
+        // Read command-line arguments using FlagReader
         FlagReader flagReader = new FlagReader(args);
-        String path = flagReader.getPath();
-        String file = flagReader.getFile();
+        String path = flagReader.getPath();  // Path for pre-defined instructions (if provided)
+        String file = flagReader.getFile();  // Maze file name
 
-        Navigator navigator = new Navigator(Directions.EAST);
-        Maze maze = new Maze(file, navigator);
-        Instructions instructions = new Instructions(path, maze);
-        Algorithm algo = new Algorithm(maze);
+        // Initialize necessary components
+        Navigator navigator = new Navigator(Directions.EAST); // Start navigating facing EAST
+        Maze maze = new Maze(file, navigator); // Create Maze instance with the provided file
+        Instructions instructions = new Instructions(path, maze); // Initialize instructions handler
+        Algorithm algo = new Algorithm(maze); // Initialize algorithm for pathfinding
 
-        logger.info("**** Computing path");
+        if (path == null) { // If no pre-defined path is provided, compute a path using an algorithm
+            path = algo.rightHandPath(); // Use right-hand rule algorithm to find a path
+            instructions.readInstructions(path); // Parse and store the computed path
+            System.out.println("Canonical path: " + path);
+            System.out.println("Factorial Path: " + instructions.getFactorial());
+        } else { // If a path is provided, validate and execute it
+            instructions.readInstructions(path); // Parse instructions
+            instructions.excecuteInstruction(); // Execute the instructions
 
-        if(path == null){ // search for a path that can get home if no path is found
-            path = algo.rightHandPath();
-            instructions.readInstructions(path);
-            logger.info("Canonical path: " + path);
-            logger.info("Factorial Path: " + instructions.getFactorial());
-        } else { // check if the path is valid
-            instructions.readInstructions(path);
-            instructions.excecuteInstruction();
-
-            //checks if the path works
-            if(maze.getLocation()[0] == maze.getExit()[0] && maze.getLocation()[1] == maze.getExit()[1]){
-                logger.info("Factorial Path: " + instructions.getFactorial());
-                logger.info("SUCCESS");
+            // Check if the final position matches the maze exit
+            if (maze.getLocation()[0] == maze.getExit()[0] && maze.getLocation()[1] == maze.getExit()[1]) {
+                System.out.println("Factorial Path: " + instructions.getFactorial());
+                System.out.println("Path is successful!"); // The provided path successfully reaches the exit
             } else {
-                logger.info("FAIL");
+                System.out.println("Path has failed!"); // The provided path does not lead to the exit
             }
         }
-
-        logger.info("** End of MazeRunner");
     }
 }
-
-
-// to do:
-// enum north south east and west (indexing as well)
-// enum for 2d char array
