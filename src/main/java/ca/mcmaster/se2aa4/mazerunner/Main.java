@@ -42,6 +42,7 @@ public class Main {
 
             // Check if the final position matches the maze exit
             if (maze.getLocation()[0] == maze.getExit()[0] && maze.getLocation()[1] == maze.getExit()[1]) {
+                System.out.println("Canonical path: " + path);
                 System.out.println("Factorial Path: " + instructions.getFactorial());
                 System.out.println("Path is successful!"); // The provided path successfully reaches the exit
             } else {
